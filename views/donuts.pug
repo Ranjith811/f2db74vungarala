@@ -1,0 +1,14 @@
+extends layout
+
+block content
+   h1= title
+   - let items = results 
+   - var result = [{"donut_name":"crispy","donut_size":100,"donut_type":"large"},{"donut_name":"baked","donut_size":200,"donut_type":"medium"},{"donut_name":"hand tossed","donut_size":300,"donut_type":"small"}]
+   div.container-fluid
+      div.row
+         each item,index in result
+            div.col-sm-2(onclick=`buy(${index})`) donut Name: #{item["donut_name"]}  <br>  donut_size: #{item["donut_size"]} <br> donut_type: #{item["donut_type"]} 
+   script.
+      function buy(index){
+         alert("you purchased item "+(index+1))
+      }

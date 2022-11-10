@@ -9,6 +9,49 @@ var usersRouter = require('./routes/users');
 var donutRouter = require('./routes/donut');
 var gridbuildRouter = require('./routes/gridbuild');
 var selectorRouter = require('./routes/selector');
+var donut = require("./models/donut");
+var resourceRouter = require('./routes/resource');
+
+// We can seed the collection if needed on server start
+async function recreateDB(){
+  // Delete everything
+  await donut.deleteMany();
+  let instance1 = new donut({"donut_name":"crispy","donut_size":100,"donut_type":"large"});
+  let instance2 = new donut({"donut_name":"baked","donut_size":200,"donut_type":"medium"})
+  let instance3 = new donut({"donut_name":"hand tossed","donut_size":300,"donut_type":"small"})
+  instance1.save( function(err,doc) {
+  if(err) return console.error(err);
+  console.log("First object saved")
+  });
+  
+  instance2.save( function(err,doc) {
+      if(err) return console.error(err);
+      console.log("Second object saved")
+      });
+  
+  instance3.save( function(err,doc) {
+      if(err) return console.error(err);
+      console.log("Third object saved")
+          });
+  }
+  let reseed = true;
+  if (reseed) { recreateDB();}
+
+require('dotenv').config(); 
+const connectionString =  
+process.env.MONGO_CON 
+mongoose = require('mongoose'); 
+mongoose.connect(connectionString,  
+{useNewUrlParser: true, 
+useUnifiedTopology: true}); 
+
+//Get the default connection 
+var db = mongoose.connection; 
+ 
+//Bind connection to error event  
+db.on('error', console.error.bind(console, 'MongoDB connection error:')); 
+db.once("open", function(){ 
+  console.log("Connection to DB succeeded")}); 
 
 var app = express();
 
@@ -24,9 +67,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/donut', donutRouter);
+app.use('/donuts', donutRouter);
 app.use('/gridbuild', gridbuildRouter);
 app.use('/selector', selectorRouter);
+app.use('/resource', resourceRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
