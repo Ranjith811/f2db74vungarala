@@ -1,9 +1,9 @@
 var donut = require('../models/donut'); 
  
 // List of all donuts 
-exports.donut_list = function(req, res) { 
-    res.send('NOT IMPLEMENTED: donut list'); 
-}; 
+//exports.donut_list = function(req, res) { 
+    //res.send('NOT IMPLEMENTED: donut list'); 
+//}; 
 
 // List of all Costumes 
 exports.donut_list = async function(req, res) { 
@@ -17,11 +17,17 @@ exports.donut_list = async function(req, res) {
     }   
 }; 
  
-// for a specific donut. 
-exports.donut_detail = function(req, res) { 
-    res.send('NOT IMPLEMENTED: donut detail: ' + req.params.id); 
-}; 
-// List of all Costumes 
+// for a specific Donut. 
+exports.donut_detail = async function(req, res) { 
+    console.log("detail"  + req.params.id) 
+    try { 
+        result = await donut.findById( req.params.id) 
+        res.send(result) 
+    } catch (error) { 
+        res.status(500) 
+        res.send(`{"error": document for id ${req.params.id} not found`); 
+    } 
+}; // List of all Costumes 
 exports.donut_detail = async function(req, res) { 
     try{ 
         thedonuts = await donut.find(); 
@@ -67,20 +73,25 @@ exports.donut_delete = async function(req, res) {
     }   
 }; 
  
-// Handle Donut update form on PUT. 
-exports.donut_update_put = function(req, res) { 
-    res.send('NOT IMPLEMENTED: donut update PUT' + req.params.id); 
-}; 
-// List of all Costumes 
+//Handle donut update form on PUT. 
 exports.donut_update_put = async function(req, res) { 
-    try{ 
-        thedonuts = await donut.find(); 
-        res.send(thedonuts); 
+    console.log(`update on id ${req.params.id} with body 
+${JSON.stringify(req.body)}`) 
+    try { 
+        let toUpdate = await donut.findById( req.params.id) 
+        // Do updates of properties 
+        if(req.body.donut_name)  
+               toUpdate.donut_name = req.body.donut_name; 
+        if(req.body.donut_size) toUpdate.donut_size = req.body.donut_size; 
+        if(req.body.donut_type) toUpdate.donut_type = req.body.donut_type; 
+        let result = await toUpdate.save(); 
+        console.log("Sucess " + result) 
+        res.send(result) 
+    } catch (err) { 
+        res.status(500) 
+        res.send(`{"error": ${err}: Update for id ${req.params.id} 
+failed`); 
     } 
-    catch(err){ 
-        res.status(500); 
-        res.send(`{"error": ${err}}`); 
-    }   
 }; 
 
 // VIEWS 
