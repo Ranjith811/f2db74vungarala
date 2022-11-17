@@ -1,0 +1,42 @@
+extends layout
+block content
+  h1= title
+  if (toShow == null) 
+    h2 No instance to update 
+  else
+  - let donutid = toShow._id
+  - let donut_name = toShow.donut_name
+  - let donut_size = toShow.donut_size
+  - let donut_type = toShow.donut_type
+  - let actionid = "/resource/donuts/" + donutid
+  div.row(class='mb-2') 
+    div.mr-1 ID is 
+    div #{donutid} 
+  form(id='donutForm', action=actionid, method="PUT")
+   div.form-group
+    label.donutAttr(for='donut_name') donut name
+    input#donut_name(type='text', name='donut_name')
+   div.form-group
+    label.donutAttr(for='donut_size') donut size
+    input#donut_size(type='number', name='donut_size')
+   div.form-group
+    label.donutAttr(for='donut_type') donut type
+    input#donut_type(type='text', name='donut_type')
+   input(type="submit")
+  script.
+    document.forms['donutForm'].addEventListener('submit', (event) => {
+      event.preventDefault();
+      // TODO do something here to show user that form is being submitted
+      fetch(event.target.action, {
+       method: 'PUT',
+       body: new URLSearchParams(new FormData(event.target)) // event.target is the form
+      }).then((resp) => {
+       return resp.json(); // or resp.text() or whatever the server sends
+      }).then((body) => {
+       alert("Save succeded")
+       // TODO handle body
+      }).catch((error) => {
+       // TODO handle error
+       alert("Save failed " + error )
+      });
+     });

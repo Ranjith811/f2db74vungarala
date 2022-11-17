@@ -1,0 +1,31 @@
+extends layout
+block content
+  h1= title
+   form(id='donutForm', action="/resource/donut", method="POST")
+    div.form-group
+     label.donutStyle(for='donut_name') donut name
+     input#donut_name(type='text', name='donut_name')
+    div.form-group
+     label.donutStyle(for='donut_size') donut size
+     input#donut_size(type='number', name='donut_size')
+    div.form-group
+     label.donutStyle(for='donut_type') donut type
+     input#donut_type(type='text', name='donut_type')
+     input(type="submit")
+   script.
+    document.forms['donutForm'].addEventListener('submit', (event) => {
+      event.preventDefault();
+      // TODO do something here to show user that form is being submitted
+      fetch(event.target.action, {
+       method: 'POST',
+       body: new URLSearchParams(new FormData(event.target)) // event.target is the form
+      }).then((resp) => {
+       return resp.json(); // or resp.text() or whatever the server sends
+      }).then((body) => {
+       alert("Save succeded")
+       // TODO handle body
+      }).catch((error) => {
+       // TODO handle error
+       alert("Save failed " + error )
+      });
+     });
