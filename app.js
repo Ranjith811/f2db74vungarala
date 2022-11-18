@@ -4,13 +4,35 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+var passport = require('passport'); 
+var LocalStrategy = require('passport-local').Strategy; 
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var donutRouter = require('./routes/donut');
 var gridbuildRouter = require('./routes/gridbuild');
 var selectorRouter = require('./routes/selector');
+
+app.use(require('express-session')({ 
+  secret: 'keyboard cat', 
+  resave: false, 
+  saveUninitialized: false 
+})); 
+app.use(passport.initialize()); 
+app.use(passport.session()); 
+
 var donut = require("./models/donut");
 var resourceRouter = require('./routes/resource');
+
+// passport config 
+// Use the existing connection 
+// The Account model  
+var Account =require('./models/account'); 
+ 
+passport.use(new LocalStrategy(Account.authenticate())); 
+passport.serializeUser(Account.serializeUser()); 
+passport.deserializeUser(Account.deserializeUser()); 
+ 
 
 // We can seed the collection if needed on server start
 async function recreateDB(){
