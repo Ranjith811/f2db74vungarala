@@ -12,15 +12,6 @@ var usersRouter = require('./routes/users');
 var donutRouter = require('./routes/donut');
 var gridbuildRouter = require('./routes/gridbuild');
 var selectorRouter = require('./routes/selector');
-
-app.use(require('express-session')({ 
-  secret: 'keyboard cat', 
-  resave: false, 
-  saveUninitialized: false 
-})); 
-app.use(passport.initialize()); 
-app.use(passport.session()); 
-
 var donut = require("./models/donut");
 var resourceRouter = require('./routes/resource');
 
@@ -92,6 +83,21 @@ app.use('/users', usersRouter);
 app.use('/donut', donutRouter);
 app.use('/gridbuild', gridbuildRouter);
 app.use('/selector', selectorRouter);
+
+app.use(require('express-session')({ 
+  secret: 'keyboard cat', 
+  resave: false, 
+  saveUninitialized: false 
+})); 
+app.use(passport.initialize()); 
+app.use(passport.session()); app.use(require('express-session')({ 
+  secret: 'keyboard cat', 
+  resave: false, 
+  saveUninitialized: false 
+})); 
+app.use(passport.initialize()); 
+app.use(passport.session()); 
+
 app.use('/resource', resourceRouter);
 
 
