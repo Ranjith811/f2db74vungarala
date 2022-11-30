@@ -13,6 +13,7 @@ router.get('/update', donut_controlers.donut_update_Page);
 /* GET delete donut page */
 router.get('/delete', donut_controlers.donut_delete_Page);
 
+router.get('/donut/:id', donut_controlers.donut_detail);
 module.exports = router;
 
 

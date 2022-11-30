@@ -11,8 +11,12 @@ block content
                         div(class='card', style='width: 17rem;')
                             div(class='card-body')
                                 - let destination = `dispatch(\"/donut/update?id=${item._id}\")`
+                                - let destinationdelete = `dispatch(\"/donut/delete?id=${item._id}\")`
+                                - let destinationdetail = `dispatch(\"/donut/detail?id=${item._id}\")`
                                 div(class='card-text', onclick=`buy(${index})`) donut Name: #{item["donut_name"]}  <br>  donut_size: #{item["donut_size"]} <br> donut_type: #{item["donut_type"]}
                                 button.btn(class="btn-primary btn-sm ml-1", style="margin: 5px; width: 130px;", onclick= destination) Update
+                                button.btn( class="btn-primary ml-1", onclick= destinationdelete) Delete
+                                button.btn( class="btn-primary ml-1", onclick= destinationdetail) Detail
   script.
       function buy(index){
          alert("you purchased item "+(index+1))
